@@ -21,10 +21,14 @@ public class Player extends Entity{
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
-        setDefaultValues();
-        getPlayerImage();
         screenX = gp.screenWidth/2-(gp.tileSize/2);
         screenY = gp.screenHeight/2-(gp.tileSize/2);
+
+        solidArea = new Rectangle(15,27,18,15);
+
+        setDefaultValues();
+        getPlayerImage();
+        spriteNumber = 2;
 
     }
     public void setDefaultValues (){
@@ -60,28 +64,49 @@ public class Player extends Entity{
     }
 
     public void update(){
-        if(keyH.upPressed){
-            direction = "up";
-            worldY-=speed;
-            spriteCounter++;
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
+            if(keyH.upPressed){
+                direction = "up";
+            }
+            else if(keyH.downPressed){
+                direction = "down";
+            }else if(keyH.leftPressed){
+                direction = "left";
+            } else if (keyH.rightPressed) {
+                direction = "right";
+            }
+
+            //check for collision
+            colissionOn = false;
+            gp.cChecker.CheckTile(this);
+            //if collision is false you can move
+            if(!colissionOn){
+                switch (direction){
+                    case "up":
+                        worldY-=speed;
+                        spriteCounter++;
+                        break;
+                    case "down":
+                        worldY+=speed;
+                        spriteCounter++;
+                        break;
+                    case "left":
+                        worldX-=speed;
+                        spriteCounter++;
+                        break;
+                    case "right":
+                        worldX+=speed;
+                        spriteCounter++;
+                        break;
+                }
+            }
+
+            if (spriteCounter>=8){
+                spriteNumber = (spriteNumber%4)+1;
+                spriteCounter= 0;
+            }
         }
-        else if(keyH.downPressed){
-            direction = "down";
-            worldY+=speed;
-            spriteCounter++;
-        }else if(keyH.leftPressed){
-            direction = "left";
-            worldX-=speed;
-            spriteCounter++;
-        } else if (keyH.rightPressed) {
-            direction = "right";
-            worldX+=speed;
-            spriteCounter++;
-        }
-        if (spriteCounter>=8){
-            spriteNumber = (spriteNumber%4)+1;
-            spriteCounter= 0;
-        }
+
     }
     public void draw(Graphics2D g2){
         //g2.setColor(Color.white);
