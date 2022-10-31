@@ -3,17 +3,18 @@ import java.awt.*;
 public class Tree extends Panel{
 
     //configurations
-    double [] angles = {10,10};
+    double [] angles = {12,12};
     float ratio = 0.75f;
     int initialSize = 200;
     int tolerance = 1;
-    int strokeSizeTransition = 36;
+    int strokeSizeTransition = 30;
     int leafsize = 8;
     int leafWidth = 3;
 
 
     int [] dimentions;
     int [][] diretions = {{0,-1},{1,0},{0,1},{-1,0}};
+
     public Tree(int a, int b) {
         this.setPreferredSize(new Dimension(a,b));
         this.setBackground(Color.BLACK);
